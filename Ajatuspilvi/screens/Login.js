@@ -26,10 +26,10 @@ export default function LoginScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
         <View style={styles.container2}>
-            <Text style={styles.textstyle} >Email:</Text>
+            <Text style={styles.textstyle} >Username:</Text>
             <TextInput  style={styles.btnSpacer2}
                 keyboardType='email-address'
-                placeholder='Email'
+                placeholder='Username'
                 onChangeText={text => setEmail(text)}
             />
             <Text style={styles.textstyle}>Password:</Text>

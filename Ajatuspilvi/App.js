@@ -16,6 +16,7 @@ import RegisterScreen from './screens/Register';
 import React, { useRef } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+
 const Stack = createNativeStackNavigator();
 
 function GlobalStack() {
@@ -31,6 +32,14 @@ function GlobalStack() {
         name="Thread"
         component={Thread}
       />
+      <Stack.Screen
+              name="ThreadMenu"
+              component={ThreadMenu}
+            />
+      <Stack.Screen
+              name="Login" // Add this line
+              component={LoginScreen} // Add this line
+            />
     </Stack.Navigator>
   )
 }
@@ -43,18 +52,7 @@ function Notifications() {
   );
 }
 
-function CustomDrawerContent(props) {
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Sulje valikko"
-        onPress={() => props.navigation.dispatch(DrawerActions.closeDrawer())}
-      />
 
-    </DrawerContentScrollView>
-  );
-}
 
 const Drawer = createDrawerNavigator();
 
