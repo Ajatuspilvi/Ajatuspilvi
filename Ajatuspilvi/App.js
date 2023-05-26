@@ -17,6 +17,7 @@ import React, { useRef } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
+
 const Stack = createNativeStackNavigator();
 
 function GlobalStack() {
@@ -65,30 +66,14 @@ function MyDrawer() {
             size={23}
             name={'home-outline'}></Icon>
           }}/>
-      <Drawer.Screen name="nappi" component={ThreadMenu}
-      options={{
-          drawerIcon: config => <Icon
-            size={23}
-            name={'file-tray-stacked-outline'}></Icon>
-          }}/>
-      <Drawer.Screen name="uusi nappi" component={NewThread}
-      options={{
-          drawerIcon: config => <Icon
-            size={23}
-            name={'file-tray-outline'}></Icon>
-          }}/>
+
       <Drawer.Screen name="Login" component={LoginScreen}
       options={{
           drawerIcon: config => <Icon
             size={23}
             name={'log-in-outline'}></Icon>
           }}/>
-      <Drawer.Screen name="Register" component={RegisterScreen}
-       options={{
-          drawerIcon: config => <Icon
-            size={23}
-            name={'clipboard-outline'}></Icon>
-          }}/>
+
 
 
 

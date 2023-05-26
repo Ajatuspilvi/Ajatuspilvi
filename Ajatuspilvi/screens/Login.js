@@ -1,89 +1,51 @@
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { View, Button, TextInput, Alert } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 
-export default function LoginScreen({ route, navigation }) {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-  //  const auth = getAuth();
+export default function Login() {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
 
-    const tryLogout = async () => {
-       // getAuth().signOut()
-        await removeLogin()
+  const handlePhoneNumberSubmit = async () => {
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      // Store the confirmation object for later use
+      // You'll need it to confirm the verification code
+      // e.g., setConfirmation(confirmation);
+      // Show UI for entering the verification code
+    } catch (error) {
+      console.log('Failed to send verification code', error);
+      Alert.alert('Error', 'Failed to send verification code');
     }
+  };
 
-    const tryLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredentials) => {
-                console.log(userCredentials._tokenResponse)
-                saveLogin(userCredentials._tokenResponse.idToken, userCredentials._tokenResponse.localId)
-            }).then(navigation.navigate('Home'))
-            .catch((error) => {
-                console.error(error);
-            })
+  const handleVerificationCodeSubmit = async () => {
+    try {
+      const credential = auth.PhoneAuthProvider.credential(confirmation.verificationId, verificationCode);
+      await auth().signInWithCredential(credential);
+      // Authentication successful, proceed to the next screen
+    } catch (error) {
+      console.log('Failed to verify verification code', error);
+      Alert.alert('Error', 'Failed to verify verification code');
     }
+  };
 
-    return (
-        <View style={styles.container}>
-        <View style={styles.container2}>
-            <Text style={styles.textstyle} >Username:</Text>
-            <TextInput  style={styles.btnSpacer2}
-                keyboardType='email-address'
-                placeholder='Username'
-                onChangeText={text => setEmail(text)}
-            />
-            <Text style={styles.textstyle}>Password:</Text>
-            <TextInput  style={styles.btnSpacer2}
-                placeholder='Password'
-                onChangeText={text => setPassword(text)}
-                secureTextEntry={true}
-            />
-            <View style={styles.loginbtn}>
-            <Button onPress={() => tryLogin()} title="Login"></Button>
-            </View>
-            </View>
+  return (
+    <View>
+      <TextInput
+        placeholder="Phone Number"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+      />
+      <Button title="Send Verification Code" onPress={handlePhoneNumberSubmit} />
 
-        </View>
-    )
+      <TextInput
+        placeholder="Verification Code"
+        value={verificationCode}
+        onChangeText={setVerificationCode}
+      />
+      <Button title="Verify Code" onPress={handleVerificationCodeSubmit} />
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-
-    },
-    btnSpacer: {
-    margin: 10,
-    textAlign: 'center',
-    },
-     btnSpacer2: {
-        textAlign: 'center',
-        margin:15,
-
-        backgroundColor: '#eaeaea'
-        },
-
-     btnSpacer3: {
-        textAlign: 'center',
-        margin:15,
-        width: 300,
-        backgroundColor: '#eaeaea',
-
-        },
-     container2: {
-      textAlign: 'center',
-      width: 300,
-     marginBottom: 80
-     },
-     textstyle: {
-      textAlign: 'center',
-     },
-     loginbtn: {
-     width: 200,
-     alignSelf: 'center'
-     }
-
-});
