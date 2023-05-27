@@ -73,7 +73,12 @@ function MyDrawer() {
             size={23}
             name={'log-in-outline'}></Icon>
           }}/>
-
+          <Drawer.Screen name="Register" component={RegisterScreen}
+                options={{
+                    drawerIcon: config => <Icon
+                      size={23}
+                      name={'ios-person-outline'}></Icon>
+                    }}/>
 
 
 
