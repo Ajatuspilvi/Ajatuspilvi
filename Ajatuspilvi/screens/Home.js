@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Image, ImageBackground, TextInput } from 'react-native';
 import io from 'socket.io-client';
 
-const socket = io('https://your-heroku-app.herokuapp.com');
+const socket = io('https://mindcloud.herokuapp.com/');
 
 import Comments from '../components/Comments';
 
