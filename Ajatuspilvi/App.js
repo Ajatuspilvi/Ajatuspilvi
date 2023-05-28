@@ -13,8 +13,9 @@ import NewThread from './screens/NewThread';
 import Thread from './screens/Thread';
 import LoginScreen from './screens/Login';
 import RegisterScreen from './screens/Register';
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { io } from 'socket.io-client';
 
 
 
