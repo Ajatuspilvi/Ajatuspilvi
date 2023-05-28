@@ -1,42 +1,48 @@
-import { View, Text, Button, StyleSheet, Image, ImageBackground, TextInput } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import Comments from '../components/Comments';
+import { View, Text, Button, StyleSheet, Image, ImageBackground, TextInput } from 'react-native';
 import io from 'socket.io-client';
 
-export default function Home({ route, navigation }) {
-  const params = route.params;
+const socket = io('https://your-heroku-app.herokuapp.com');
+
+import Comments from '../components/Comments';
+
+export default function Home() {
   const [message, setMessage] = useState('');
   const [comments, setComments] = useState([]);
-  const socket = io('localhost:3000/');
+
+  useEffect(() => {
+     // Replace with your server IP address
+
+    socket.on('chat message', (msg) => {
+      setComments((prevComments) => [...prevComments, msg]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const handleMessageChange = (text) => {
     setMessage(text);
   };
 
   const handleSubmit = () => {
-    console.log('Message:', message);
-    setComments([...comments, message]);
-    socket.emit('chatMessage', message);
-    setMessage('');
+    if (message) {
+      // Emit the message to the server
+      socket.emit('chat message', message);
+
+      // Clear the input field
+      setMessage('');
+    }
   };
 
-  useEffect(() => {
-    socket.on('chatMessage', (message) => {
-      setComments((prevComments) => [...prevComments, message]);
-    });
-
-    return () => {
-      socket.off('chatMessage');
-      socket.disconnect();
-    };
-  }, []);
 
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../wallpaper.jpg')} style={styles.imageBackground}>
         <View style={styles.content}>
           {comments.map((comment, index) => (
-            <Comments key={index} sender="User" message={comment} />
+            <Comments key={index} message={comments} sender="User" />
           ))}
         </View>
 
@@ -47,7 +53,7 @@ export default function Home({ route, navigation }) {
             value={message}
             onChangeText={handleMessageChange}
           />
-          <Button title="Send" onPress={handleSubmit} />
+          <Button style={styles.sendbtn} title="Send" onPress={handleSubmit} />
         </View>
       </ImageBackground>
     </View>
@@ -70,6 +76,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  commentContainer: {
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 30,
+    marginBottom: 10,
+    marginLeft: 60,
+    marginRight: 60,
+  },
+  sender: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginLeft: 5,
+  },
+  message: {
+    fontSize: 16,
+    marginLeft: 20,
+    marginBottom: 5,
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -88,8 +112,5 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 30,
     width: 500,
-  },
-  button: {
-    borderRadius: 30,
   },
 });

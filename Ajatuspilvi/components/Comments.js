@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 10,
     marginLeft: 60,
-    marginRight:60
+    marginRight: 60,
   },
   sender: {
     fontWeight: 'bold',
     marginBottom: 5,
-    marginLeft: 5
+    marginLeft: 5,
   },
   message: {
     fontSize: 16,
